@@ -12,6 +12,7 @@ import com.forex.repository.ForExRateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -35,6 +36,9 @@ public class ForExRateService {
 
     @Autowired
     private ForExRateDao forExRateDao;
+
+    @Value("${api.url}")
+    private String apiUrl;
 
     private static final Logger log = LoggerFactory.getLogger(ForExRateService.class);
     private final RestTemplate restTemplate = new RestTemplate();
@@ -75,7 +79,7 @@ public class ForExRateService {
     // Scheduled task that runs daily at 18:00
     @Scheduled(cron = "0 0 18 * * ?")
     public void fetchDailyExchangeRates() {
-        String apiUrl = "https://openapi.taifex.com.tw/v1/DailyForeignExchangeRates";
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         HttpHeaders headers = new HttpHeaders();
